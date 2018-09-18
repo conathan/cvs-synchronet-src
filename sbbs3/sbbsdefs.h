@@ -511,7 +511,8 @@ typedef enum {						/* Values for xtrn_t.event				*/
 #define LEN_COMP		30	/* User computer description					*/
 #define LEN_COMMENT 	60	/* User comment 								*/
 #define LEN_NETMAIL 	60	/* NetMail forwarding address					*/
-#define LEN_PASS		 8	/* User password								*/
+#define LEN_PASS_PLN	 8	/* Plain Text User password						*/
+#define LEN_PASS		64	/* Hashed User password							*/
 #define LEN_PHONE		12	/* User phone number							*/
 #define LEN_BIRTH		 8	/* Birthday in MM/DD/YY format					*/
 #define LEN_ADDRESS 	30	/* User address 								*/
@@ -547,8 +548,8 @@ typedef enum {						/* Values for xtrn_t.event				*/
 #define U_LOCATION	U_ADDRESS+LEN_ADDRESS 
 #define U_ZIPCODE	U_LOCATION+LEN_LOCATION 
 
-#define U_PASS		U_ZIPCODE+LEN_ZIPCODE+2 
-#define U_PHONE  	U_PASS+8  			/* Offset to phone-number */
+#define U_PASS_PLN	U_ZIPCODE+LEN_ZIPCODE+2 
+#define U_PHONE  	U_PASS_PLN+8	/* Offset to phone-number */
 #define U_BIRTH  	U_PHONE+12 		/* Offset to users birthday	*/
 #define U_MODEM     U_BIRTH+8 
 #define U_LASTON	U_MODEM+8 
@@ -602,9 +603,11 @@ typedef enum {						/* Values for xtrn_t.event				*/
 #define U_CHAT		U_TMPEXT+3 	/* Chat settings */
 #define U_NS_TIME	U_CHAT+8 		/* New-file scan date/time */
 #define U_PROT		U_NS_TIME+8 	/* Default transfer protocol */
+
 #define U_LOGONTIME	U_PROT+1
 #define U_CURDIR	U_LOGONTIME+8	/* Current dir (internal code  */
-#define U_UNUSED	U_CURDIR+16
+#define U_PASS		U_CURDIR+16		/* Hashed Password */
+#define U_UNUSED	U_PASS+LEN_PASS
 #define U_LEN		(U_UNUSED+4+2)
 
 /****************************************************************************/

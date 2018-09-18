@@ -254,7 +254,8 @@ const					    { String lengths					   	    }
     LEN_COMP		=30;	{ User computer description				    }
     LEN_COMMENT 	=60;	{ User comment 							    }
     LEN_NETMAIL 	=60;	{ NetMail forwarding address		   	    }
-    LEN_PASS		=8;	    { User password							    }
+    LEN_PASS_PLN	=8;	{ Plain Text User password							    }
+    LEN_PASS		=64;	{ Hashed User password							    }
     LEN_PHONE		=12;	{ User phone number						    }
     LEN_BIRTH		=8;	    { Birthday in xx/xx/YY format		   	    }
     LEN_ADDRESS 	=30;	{ User address 							    }
@@ -290,8 +291,8 @@ const
     U_LOCATION	=U_ADDRESS+LEN_ADDRESS;
     U_ZIPCODE	=U_LOCATION+LEN_LOCATION;
 
-    U_PASS		=U_ZIPCODE+LEN_ZIPCODE+2;
-    U_PHONE  	=U_PASS+8; 			    { Offset to phone-number }
+    U_PASS_PLN	=U_ZIPCODE+LEN_ZIPCODE+2;
+    U_PHONE  	=U_PASS_PLN+8; 			    { Offset to phone-number }
     U_BIRTH  	=U_PHONE+12; 		    { Offset to users birthday	}
     U_MODEM     =U_BIRTH+8;
     U_LASTON	=U_MODEM+8;
@@ -346,7 +347,10 @@ const
     U_CHAT		=U_TMPEXT+3; 	{ Chat settings }
     U_NS_TIME	=U_CHAT+8; 		{ New-file scan date/time }
     U_PROT		=U_NS_TIME+8; 	{ Default transfer protocol }
-    U_UNUSED	=U_PROT+1;
+    U_UNUSED2	=U_PROT+1+8+16;
+    U_PASS	=U_UNUSED2+LEN_PASS;	{ Hashed Password }
+
+    U_UNUSED	=U_PASS+1;
     U_LEN		=(U_UNUSED+28+2);
 
 { Bit values for user_misc 		}
