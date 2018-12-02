@@ -512,7 +512,7 @@ typedef enum {						/* Values for xtrn_t.event				*/
 #define LEN_COMMENT 	60	/* User comment 								*/
 #define LEN_NETMAIL 	60	/* NetMail forwarding address					*/
 #define LEN_PASS_PLN	 8	/* Plain Text User password						*/
-#define LEN_PASS		64	/* Hashed User password							*/
+#define LEN_PASS		128	/* Hashed User password (108 for SHA256 w/16salt*/
 #define LEN_PHONE		12	/* User phone number							*/
 #define LEN_BIRTH		 8	/* Birthday in MM/DD/YY format					*/
 #define LEN_ADDRESS 	30	/* User address 								*/

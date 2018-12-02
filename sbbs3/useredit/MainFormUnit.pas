@@ -255,7 +255,7 @@ const					    { String lengths					   	    }
     LEN_COMMENT 	=60;	{ User comment 							    }
     LEN_NETMAIL 	=60;	{ NetMail forwarding address		   	    }
     LEN_PASS_PLN	=8;	{ Plain Text User password							    }
-    LEN_PASS		=64;	{ Hashed User password							    }
+    LEN_PASS		=128;	{ Hashed User password							    }
     LEN_PHONE		=12;	{ User phone number						    }
     LEN_BIRTH		=8;	    { Birthday in xx/xx/YY format		   	    }
     LEN_ADDRESS 	=30;	{ User address 							    }
@@ -348,9 +348,9 @@ const
     U_NS_TIME	=U_CHAT+8; 		{ New-file scan date/time }
     U_PROT		=U_NS_TIME+8; 	{ Default transfer protocol }
     U_UNUSED2	=U_PROT+1+8+16;
-    U_PASS	=U_UNUSED2+LEN_PASS;	{ Hashed Password }
+    U_PASS	=U_UNUSED2;		{ Hashed Password }
 
-    U_UNUSED	=U_PASS+1;
+    U_UNUSED	=U_PASS+LEN_PASS;
     U_LEN		=(U_UNUSED+28+2);
 
 { Bit values for user_misc 		}
