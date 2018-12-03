@@ -62,6 +62,7 @@
 #include "ars_defs.h"	/* needed for SCFG files */
 #include "userdat.h"	/* getnodedat() */
 
+#include "nccrypt.h"
 #define CTRL(x) (x&037)
 
 struct user_list {
@@ -1563,7 +1564,7 @@ int edit_personal(scfg_t *cfg, user_t *user)
 				getuserdat(cfg,user);
 				uifc.input(WIN_MID|WIN_ACT|WIN_SAV,0,0,"Password",user->pass,LEN_PASS,K_EDIT);
 				if(uifc.changes) {
-					putuserrec(cfg,user->number,U_PASS,LEN_PASS,user->pass);
+					putuserrec(cfg,user->number,U_PASS,LEN_PASS,str2pwd(user->pass));
 					user->pwmod=time(NULL);
 					putuserrec(cfg,user->number,U_PWMOD,8,ultoa(user->pwmod,str,16));
 				}

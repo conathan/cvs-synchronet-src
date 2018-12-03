@@ -37,6 +37,8 @@
 #include "sbbs.h"
 #include "js_request.h"
 
+#include "nccrypt.h"
+
 #ifdef JAVASCRIPT
 
 typedef struct
@@ -594,7 +596,7 @@ static JSBool js_user_set(JSContext *cx, JSObject *obj, jsid id, JSBool strict, 
 		/* security properties*/
 		case USER_PROP_PASS:	
 			SAFECOPY(p->user->pass,str);
-			putuserrec(scfg,p->user->number,U_PASS,LEN_PASS,strupr(str));
+			putuserrec(scfg,p->user->number,U_PASS,LEN_PASS,str2pwd(str));
 			break;
 		case USER_PROP_PWMOD:
 			JS_RESUMEREQUEST(cx, rc);

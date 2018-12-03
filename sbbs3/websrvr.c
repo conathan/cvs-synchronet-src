@@ -81,6 +81,8 @@
 #include "ssl.h"
 #include "fastcgi.h"
 
+#include "nccrypt.h"
+
 static const char*	server_name="Synchronet Web Server";
 static const char*	newline="\r\n";
 static const char*	http_scheme="http://";
@@ -5296,7 +5298,7 @@ js_login(JSContext *cx, uintN argc, jsval *arglist)
 		if(p==NULL) 
 			return(JS_FALSE);
 
-		if(stricmp(user.pass,p)) { /* Wrong password */
+		if(pwdcmp(user.pass,p)==0) { /* Wrong password */
 			rc=JS_SUSPENDREQUEST(cx);
 			lprintf(LOG_WARNING,"%04d !INVALID PASSWORD ATTEMPT FOR USER: '%s'"
 				,session->socket,user.alias);

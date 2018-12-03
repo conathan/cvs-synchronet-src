@@ -38,6 +38,8 @@
 #include "sbbs.h"
 #include "cmdshell.h"
 
+#include "nccrypt.h"
+
 extern "C" void client_on(SOCKET sock, client_t* client, BOOL update);
 
 /****************************************************************************/
@@ -231,7 +233,8 @@ bool sbbs_t::logon()
 			bprintf(text[TimeToChangePw],cfg.sys_pwdays);
 
 			c=0;
-			while(c<LEN_PASS) { 				/* Create random password */
+			//while(c<LEN_PASS) { 				/* Create random password */
+			while(c<8) { 				/* Create random password */
 				str[c]=sbbs_random(43)+'0';
 				if(isalnum(str[c]))
 					c++; 
@@ -242,7 +245,7 @@ bool sbbs_t::logon()
 			if(cfg.sys_misc&SM_PWEDIT && yesno(text[NewPasswordQ]))
 				while(online) {
 					bputs(text[NewPassword]);
-					getstr(str,LEN_PASS,K_UPPER|K_LINE);
+					getstr(str,LEN_PASS,K_LINE);
 					truncsp(str);
 					if(chkpass(str,&useron,true))
 						break;
@@ -257,7 +260,7 @@ bool sbbs_t::logon()
 				else
 					bputs(text[NewUserPasswordVerify]);
 				console|=CON_R_ECHOX;
-				getstr(tmp,LEN_PASS*2,K_UPPER);
+				getstr(tmp,LEN_PASS*2,0);
 				console&=~(CON_R_ECHOX|CON_L_ECHOX);
 				if(strcmp(str,tmp)) {
 					bputs(text[Wrong]);
@@ -265,7 +268,7 @@ bool sbbs_t::logon()
 				}
 				break; 
 			}
-			strcpy(useron.pass,str);
+			strncpy(useron.pass,str2pwd(str),LEN_PASS);
 			useron.pwmod=time32(NULL);
 			putuserrec(&cfg,useron.number,U_PWMOD,8,ultoa((ulong)useron.pwmod,str,16));
 			bputs(text[PasswordChanged]);

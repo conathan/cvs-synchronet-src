@@ -39,6 +39,8 @@
 
 #include "sbbs.h"
 
+#include "nccrypt.h"
+
 #define SEARCH_TXT 0
 #define SEARCH_ARS 1
 
@@ -528,10 +530,10 @@ void sbbs_t::useredit(int usernumber)
 				break;
 			case 'W':
 				bputs(text[UeditPassword]);
-				getstr(user.pass,LEN_PASS,K_UPPER|K_LINE|K_EDIT|K_AUTODEL);
+				getstr(user.pass,LEN_PASS,K_LINE|K_EDIT|K_AUTODEL);
 				if(sys_status&SS_ABORT)
 					break;
-				putuserrec(&cfg,user.number,U_PASS,LEN_PASS,user.pass);
+				putuserrec(&cfg,user.number,U_PASS,LEN_PASS,str2pwd(user.pass));
 				break;
 			case 'X':
 				attr(LIGHTGRAY);
@@ -1028,17 +1030,17 @@ void sbbs_t::maindflts(user_t* user)
 				if(!noyes(text[NewPasswordQ])) {
 					bputs(text[CurrentPassword]);
 					console|=CON_R_ECHOX;
-					ch=getstr(str,LEN_PASS,K_UPPER);
+					ch=getstr(str,LEN_PASS,0);
 					if(sys_status&SS_ABORT)
 						break;
 					console&=~(CON_R_ECHOX|CON_L_ECHOX);
-					if(stricmp(str,user->pass)) {
+					if(pwdcmp(str,user->pass)==0) {
 						bputs(text[WrongPassword]);
 						pause();
 						break; 
 					}
 					bputs(text[NewPassword]);
-					if(!getstr(str,LEN_PASS,K_UPPER|K_LINE))
+					if(!getstr(str,LEN_PASS,K_LINE))
 						break;
 					truncsp(str);
 					if(!chkpass(str,user,false)) {
@@ -1048,7 +1050,7 @@ void sbbs_t::maindflts(user_t* user)
 					}
 					bputs(text[VerifyPassword]);
 					console|=CON_R_ECHOX;
-					getstr(tmp,LEN_PASS*2,K_UPPER);
+					getstr(tmp,LEN_PASS*2,0);
 					if(sys_status&SS_ABORT)
 						break;
 					console&=~(CON_R_ECHOX|CON_L_ECHOX);
@@ -1059,7 +1061,7 @@ void sbbs_t::maindflts(user_t* user)
 					}
 					if(!online)
 						break;
-					putuserrec(&cfg,user->number,U_PASS,LEN_PASS,str);
+					putuserrec(&cfg,user->number,U_PASS,LEN_PASS,str2pwd(str));
 					now=time(NULL);
 					putuserrec(&cfg,user->number,U_PWMOD,8,ultoa((ulong)now,tmp,16));
 					bputs(text[PasswordChanged]);

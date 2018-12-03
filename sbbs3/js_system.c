@@ -37,6 +37,8 @@
 #include "sbbs.h"
 #include "js_request.h"
 
+#include "nccrypt.h"
+
 #ifdef JAVASCRIPT
 
 /* System Object Properites */
@@ -1753,7 +1755,7 @@ js_chksyspass(JSContext *cx, uintN argc, jsval *arglist)
 		return(JS_FALSE);
 
 	JSVALUE_TO_ASTRING(cx, argv[0], pass, LEN_PASS+2, NULL); // +2 is so overly long passwords fail.
-	JS_SET_RVAL(cx, arglist, BOOLEAN_TO_JSVAL(stricmp(pass,cfg->sys_pass)==0));
+	JS_SET_RVAL(cx, arglist, BOOLEAN_TO_JSVAL(pwdcmp(pass,cfg->sys_pass)==1));
 
 	return(JS_TRUE);
 }

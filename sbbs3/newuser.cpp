@@ -38,6 +38,8 @@
 #include "sbbs.h"
 #include "cmdshell.h"
 
+#include "nccrypt.h"
+
 /****************************************************************************/
 /* This function is invoked when a user enters "NEW" at the NN: prompt		*/
 /* Prompts user for personal information and then sends feedback to sysop.  */
@@ -348,7 +350,8 @@ BOOL sbbs_t::newuser()
 	}
 	else {
 		c=0;
-		while(c<LEN_PASS) { 				/* Create random password */
+		//while(c<LEN_PASS) { 				/* Create random password */
+		while(c<8) { 				/* Create random password */
 			useron.pass[c]=sbbs_random(43)+'0';
 			if(isalnum(useron.pass[c]))
 				c++; 
@@ -360,10 +363,10 @@ BOOL sbbs_t::newuser()
 		if(cfg.sys_misc&SM_PWEDIT && text[NewPasswordQ][0] && yesno(text[NewPasswordQ]))
 			while(online) {
 				bputs(text[NewPassword]);
-				getstr(str,LEN_PASS,K_UPPER|K_LINE);
+				getstr(str,LEN_PASS,K_LINE);
 				truncsp(str);
 				if(chkpass(str,&useron,true)) {
-					SAFECOPY(useron.pass,str);
+					strncpy(useron.pass,str2pwd(str),LEN_PASS);
 					CRLF;
 					bprintf(text[YourPasswordIs],useron.pass);
 					break; 
@@ -376,9 +379,9 @@ BOOL sbbs_t::newuser()
 			bputs(text[NewUserPasswordVerify]);
 			console|=CON_R_ECHOX;
 			str[0]=0;
-			getstr(str,LEN_PASS*2,K_UPPER);
+			getstr(str,LEN_PASS*2,0);
 			console&=~(CON_R_ECHOX|CON_L_ECHOX);
-			if(!strcmp(str,useron.pass)) break;
+			if(pwdcmp(str,useron.pass)) break;
 			if(cfg.sys_misc&SM_ECHO_PW) 
 				SAFEPRINTF2(tmp,"FAILED Password verification: '%s' instead of '%s'"
 					,str

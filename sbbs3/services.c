@@ -64,6 +64,8 @@
 #include "multisock.h"
 #include "ssl.h"
 
+#include "nccrypt.h"
+
 /* Constants */
 
 #define MAX_UDP_BUF_LEN			8192	/* 8K */
@@ -399,7 +401,7 @@ js_login(JSContext *cx, uintN argc, jsval *arglist)
 	}
 
 	/* Password */
-	if(client->user.pass[0] && stricmp(client->user.pass,pass)) { /* Wrong password */
+	if(client->user.pass[0] && pwdcmp(client->user.pass,pass)==1) { /* Wrong password */
 		lprintf(LOG_WARNING,"%04d %s !INVALID PASSWORD ATTEMPT FOR USER: %s"
 			,client->socket,client->service->protocol,client->user.alias);
 		badlogin(client->socket, client->service->protocol, user, pass, client->client->host, &client->addr);

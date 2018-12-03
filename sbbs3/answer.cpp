@@ -38,6 +38,8 @@
 #include "telnet.h"
 #include "ssl.h"
 
+#include "nccrypt.h"
+
 extern "C" void client_on(SOCKET sock, client_t* client, BOOL update);
 
 bool sbbs_t::answer()
@@ -112,7 +114,7 @@ bool sbbs_t::answer()
 				if(!findstr(client.addr,path)) {
 					SAFECOPY(tmp, rlogin_pass);
 					for(i=0;i<3 && online;i++) {
-						if(stricmp(tmp,useron.pass)) {
+						if(!pwdcmp(tmp,useron.pass)) {
 							if(cfg.sys_misc&SM_ECHO_PW)
 								safe_snprintf(str,sizeof(str),"(%04u)  %-25s  FAILED Password attempt: '%s'"
 									,0,useron.alias,tmp);

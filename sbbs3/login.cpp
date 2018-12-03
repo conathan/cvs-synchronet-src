@@ -36,6 +36,8 @@
 #include "sbbs.h"
 #include "cmdshell.h"
 
+#include "nccrypt.h"
+
 int sbbs_t::login(char *username, char *pw_prompt, const char* user_pw, const char* sys_pw)
 {
 	char	str[128];
@@ -80,7 +82,7 @@ int sbbs_t::login(char *username, char *pw_prompt, const char* user_pw, const ch
 			SAFECOPY(useron.alias,str);
 			bputs(pw_prompt);
 			console|=CON_R_ECHOX;
-			getstr(str,LEN_PASS*2,K_UPPER|K_LOWPRIO|K_TAB);
+			getstr(str,LEN_PASS*2,K_LOWPRIO|K_TAB);
 			console&=~(CON_R_ECHOX|CON_L_ECHOX);
 			badlogin(useron.alias, str);
 			bputs(text[InvalidLogon]);	/* why does this always fail? */
@@ -113,14 +115,14 @@ int sbbs_t::login(char *username, char *pw_prompt, const char* user_pw, const ch
 			if(pw_prompt != NULL)
 				bputs(pw_prompt);
 			console |= CON_R_ECHOX;
-			getstr(str, LEN_PASS * 2, K_UPPER | K_LOWPRIO | K_TAB);
+			getstr(str, LEN_PASS * 2, K_LOWPRIO | K_TAB);
 			console &= ~(CON_R_ECHOX | CON_L_ECHOX);
 		}
 		if(!online) {
 			useron.number=0;
 			return(LOGIC_FALSE); 
 		}
-		if(stricmp(useron.pass,str)) {
+		if(pwdcmp(useron.pass,str)==0) {
 			badlogin(useron.alias, str);
 			bputs(text[InvalidLogon]);
 			if(cfg.sys_misc&SM_ECHO_PW) 

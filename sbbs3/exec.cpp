@@ -39,6 +39,8 @@
 #include "cmdshell.h"
 #include "js_request.h"
 
+#include "nccrypt.h"
+
 char ** sbbs_t::getstrvar(csi_t *bin, int32_t name)
 {
 	uint i;
@@ -1672,6 +1674,7 @@ int sbbs_t::exec(csi_t *csi)
 						break;
 					case USER_STRING_PASSWORD:
 						sprintf(useron.pass,"%.*s",LEN_PASS,csi->str);
+						strncpy(useron.pass, str2pwd(useron.pass), LEN_PASS);
 						putuserrec(&cfg,useron.number,U_PASS,LEN_PASS
 							,useron.pass);
 						csi->logic=LOGIC_TRUE;
