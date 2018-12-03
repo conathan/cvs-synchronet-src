@@ -116,7 +116,8 @@ OBJS	=	$(MTOBJODIR)$(DIRSEP)ansiterm$(OFILE) \
 			$(MTOBJODIR)$(DIRSEP)xtrn_sec$(OFILE)\
 			$(MTOBJODIR)$(DIRSEP)yenc$(OFILE)\
 			$(MTOBJODIR)$(DIRSEP)ver$(OFILE)\
-			$(MTOBJODIR)$(DIRSEP)ssl$(OFILE)
+			$(MTOBJODIR)$(DIRSEP)ssl$(OFILE)\
+			$(MTOBJODIR)$(DIRSEP)nccrypt$(OFILE)
 
 # Must add new additions to MONO_OBJS too!
 CON_OBJS	= $(MTOBJODIR)$(DIRSEP)sbbscon$(OFILE) \
