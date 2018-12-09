@@ -5298,7 +5298,7 @@ js_login(JSContext *cx, uintN argc, jsval *arglist)
 		if(p==NULL) 
 			return(JS_FALSE);
 
-		if(pwdcmp(user.pass,p)==0) { /* Wrong password */
+		if(pwdcmp(p,user.pass)==0) { /* Wrong password */
 			rc=JS_SUSPENDREQUEST(cx);
 			lprintf(LOG_WARNING,"%04d !INVALID PASSWORD ATTEMPT FOR USER: '%s'"
 				,session->socket,user.alias);

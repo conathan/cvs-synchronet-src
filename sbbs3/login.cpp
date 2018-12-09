@@ -122,7 +122,7 @@ int sbbs_t::login(char *username, char *pw_prompt, const char* user_pw, const ch
 			useron.number=0;
 			return(LOGIC_FALSE); 
 		}
-		if(pwdcmp(useron.pass,str)==0) {
+		if(pwdcmp(str,useron.pass)==0) {
 			badlogin(useron.alias, str);
 			bputs(text[InvalidLogon]);
 			if(cfg.sys_misc&SM_ECHO_PW) 

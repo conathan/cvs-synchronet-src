@@ -401,7 +401,7 @@ js_login(JSContext *cx, uintN argc, jsval *arglist)
 	}
 
 	/* Password */
-	if(client->user.pass[0] && pwdcmp(client->user.pass,pass)==1) { /* Wrong password */
+	if(client->user.pass[0] && pwdcmp(pass,client->user.pass)==1) { /* Wrong password */
 		lprintf(LOG_WARNING,"%04d %s !INVALID PASSWORD ATTEMPT FOR USER: %s"
 			,client->socket,client->service->protocol,client->user.alias);
 		badlogin(client->socket, client->service->protocol, user, pass, client->client->host, &client->addr);
